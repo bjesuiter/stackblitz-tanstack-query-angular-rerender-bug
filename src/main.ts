@@ -1,15 +1,15 @@
-import { HttpClient, provideHttpClient, withFetch } from '@angular/common/http';
-import { Component, inject } from '@angular/core';
-import { bootstrapApplication } from '@angular/platform-browser';
+import { HttpClient, provideHttpClient, withFetch } from "@angular/common/http";
+import { Component, inject } from "@angular/core";
+import { bootstrapApplication } from "@angular/platform-browser";
 import {
-  QueryClient,
   injectQuery,
   provideAngularQuery,
-} from '@tanstack/angular-query-experimental';
-import { lastValueFrom } from 'rxjs';
-import 'zone.js';
-import { AngularQueryDevtools } from '@tanstack/angular-query-devtools-experimental';
-import { CommonModule } from '@angular/common';
+  QueryClient,
+} from "@tanstack/angular-query-experimental";
+import { lastValueFrom } from "rxjs";
+import "zone.js";
+import { AngularQueryDevtools } from "@tanstack/angular-query-devtools-experimental";
+import { CommonModule } from "@angular/common";
 
 type WorldTimeApiResponse = {
   abbreviation: string;
@@ -30,7 +30,7 @@ type WorldTimeApiResponse = {
 };
 
 @Component({
-  selector: 'app-root',
+  selector: "app-root",
   standalone: true,
   imports: [CommonModule, AngularQueryDevtools],
   template: `
@@ -57,22 +57,23 @@ type WorldTimeApiResponse = {
 })
 export class App {
   http = inject(HttpClient);
-  name = 'Angular';
+  name = "Angular";
 
   worldTimeApiQuery = injectQuery(() => ({
-    queryKey: ['worldTimeApi'],
+    queryKey: ["worldTimeApi"],
     queryFn: () =>
       lastValueFrom(
         this.http.get<WorldTimeApiResponse>(
-          'http://worldtimeapi.org/api/timezone/Europe/Berlin'
-        )
+          "http://worldtimeapi.org/api/timezone/Europe/Berlin",
+        ),
       ),
   }));
 }
 
 bootstrapApplication(App, {
   providers: [
-    provideHttpClient(withFetch()),
+    provideHttpClient(),
+    // provideHttpClient(withFetch()),
     provideAngularQuery(new QueryClient()),
   ],
 });
